@@ -19,3 +19,4 @@ npm i
 ```
 npm run dev
 ```
+5. install tailwind css
