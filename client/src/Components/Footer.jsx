@@ -4,7 +4,7 @@ function Footer(){
     const year = date.getFullYear();
     return (
         <>
-            <footer className = "relative left-0 bottom-0 h-[10vh] flex flex-col md:flex-row items-center justify-around  text-white bg-gray-800 py-5">
+            <footer className = "relative left-0 w-full min-w-full bottom-0 h-[10vh] flex flex-col md:flex-row items-center justify-around  text-white bg-gray-800 py-5">
                 <section className='text-lg'>
                     Copyright {year} | All rights reserved
                 </section>
