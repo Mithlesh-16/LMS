@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePage"
 import {Routes, Route} from 'react-router-dom'
 import NotFound from './Pages/NotFound'
 import Signup from './Pages/Signup'
+import Login from "./Pages/Login"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/about' element={<AboutUs/>}></Route>
         <Route path="*" element={<NotFound/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
+        <Route path="/login" element={<Login/>}></Route>
       </Routes>
     </>
   )

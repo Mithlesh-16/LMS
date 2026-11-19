@@ -146,6 +146,7 @@ function Signup(){
                                 onChange={handleUserInput}
                                 value={signupData.password} />
                                 <button 
+                                    type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2">
                                     {showPassword ? <FaEyeSlash/>: <FaEye/>}
@@ -156,7 +157,7 @@ function Signup(){
                             Create Account
                         </button>
                         <p className="text-center">
-                            already have an account? <Link to="slow" className="link text-accent cursor-pointer">Login</Link>
+                            already have an account? <Link to="/login" className="link text-accent cursor-pointer">Login</Link>
                         </p>
                         
                     </div>
