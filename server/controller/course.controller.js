@@ -10,8 +10,8 @@ const getAllCourses = async(req, res, next) => {
         res.status(200).json({
             success: true,
             message: "all courses that you have",
-            lectures: courses.lectures
-        }) 
+            lectures: courses
+        })
     }
     catch(err){
         return next(new AppError(err.message, 500))

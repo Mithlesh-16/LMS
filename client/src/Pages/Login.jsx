@@ -32,7 +32,7 @@ function Login(){
             return;
         } 
 
-        //dispatch create account action
+        //dispatch login action
         const response = await dispatch(login(loginData));
         console.log(response);
         if(response?.payload?.success) navigate("/");
