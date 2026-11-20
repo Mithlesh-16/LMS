@@ -11,6 +11,7 @@ function HomeLayout({children}){
 
     //for checking if, user is logged in
     const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+    // console.log("isLoggedIn : ", isLoggedIn);
     const role = useSelector((state) => state?.auth?.role);
     
     function changeWidth(){
@@ -27,8 +28,8 @@ function HomeLayout({children}){
         // const res = await dispatch(logout());
         // if(res?.payload?.success)
         const res = await dispatch(logout());
+        if(res?.payload?.success) navigate("/");
         console.log(res);
-        navigate("/");
     }
     return (
         <>
@@ -45,7 +46,7 @@ function HomeLayout({children}){
                     </label>
                 </div>
                 <div className='drawer-side w-0'>
-                    <label htmlFor="mydrawer" className='drawer-overlay'>
+                    <label htmlFor="my-drawer" className='drawer-overlay'>
 
                     </label>
                     <ul className='menu p-4 w-48 sm:w-80 bg-base-200 h-full min-h-full text-base-content relative'>
@@ -87,7 +88,7 @@ function HomeLayout({children}){
 
 
                         {isLoggedIn && (
-                            <li className='relative bottom-4 w-[90]'>
+                            <li className='absolute bottom-2 w-[90%]'>
                                 <div className='w-full flex items-center justify-center'>
                                     <button className='btn-primary px-4 py-1 font-semibold rounded-md w-full'>
                                         <Link to="/user/profile">Profile</Link>

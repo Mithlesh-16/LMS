@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {toast} from 'react-hot-toast';
 import {FaEye, FaEyeSlash} from "react-icons/fa"
 import { createAccount } from "../Redux/Slices/authSlice";
+import {isValidEmail, isValidPassword, isValidName} from '../helpers/regexMatcher'
 
 function Signup(){
     const [previewImage, setPreviewImage] = useState("");
@@ -51,24 +52,11 @@ function Signup(){
             toast.error("Please fill all the details");
             return;
         } 
-        
-        //checking field length
-        if(signupData.fullName.length < 3) {
-            toast.error("Full Name should be atleast 3 chars.");
-            return;
-        }
 
-        //checking if valid email
-        if(!signupData.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)){
-            toast.error("Invalid Email ID");
-            return;
-        }
-
-        //checking if correct password pattern
-        if(!signupData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)){
-            toast.error("Password must contain atleast 8 characters, one uppercase, one lowercase, one digit and one special character");
-            return;
-        }
+        //validating the form values
+        isValidName(signupData.name);
+        isValidPassword(signupData.password);
+        isValidEmail(signupData.email);
 
         const formData = new FormData();
         formData.append("fullName", signupData.fullName);

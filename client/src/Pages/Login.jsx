@@ -34,7 +34,7 @@ function Login(){
 
         //dispatch login action
         const response = await dispatch(login(loginData));
-        console.log(response);
+        console.log("response after dispatch login action: ", response);
         if(response?.payload?.success) navigate("/");
         
         setloginData({

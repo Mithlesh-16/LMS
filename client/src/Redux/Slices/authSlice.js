@@ -21,7 +21,7 @@ export const createAccount= createAsyncThunk("/auth/signup", async(data) => {
         return (await res).data;
     }
     catch(e){
-        toast.error(error?.response?.data?.massage);
+        toast.error(e?.response?.data?.massage);
     }
 })
 
@@ -35,15 +35,17 @@ export const login = createAsyncThunk("/auth/login", async(data) => {
             },
             error: "Failed to login"
         })
-        return (await res).data;
+        const response = (await res).data;
+        return response;
+        console.log("response of login asyncThunk: ", response.data);
     }catch(e){
-        toast.error(error?.response?.data?.message);
+        toast.error(e?.response?.data?.message);
     }
 })
 
 export const logout = createAsyncThunk("auth/logout", async() => {
     try{
-        const res = axiosInstance.post("users/logout");
+        const res = axiosInstance.get("users/logout");
         toast.promise(res, {
             loading: "wait!! logout in progress..",
             success: (data) => {
@@ -51,8 +53,9 @@ export const logout = createAsyncThunk("auth/logout", async() => {
             },
             error: "Failed to log out!!"
         })
+        return (await res).data;
     }catch(e){
-        toast.error(error?.response?.data?.message);
+        toast.error(e?.response?.data?.message);
     }
 })
 
@@ -62,12 +65,12 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
-            localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+            localStorage.setItem("data", JSON.stringify(action?.payload?.userExists));
             localStorage.setItem("isLoggedIn", true);
-            localStorage.setItem("role", action?.payload?.user?.role);
+            localStorage.setItem("role", action?.payload?.userExists?.role);
             state.isLoggedIn = true;
-            state.data = action?.payload?.user;
-            state.role = action?.payload?.user.role;
+            state.data = action?.payload?.userExists;
+            state.role = action?.payload?.userExists?.role;
         })
         builder.addCase(logout.fulfilled, (state, action) => {
             localStorage.clear();
