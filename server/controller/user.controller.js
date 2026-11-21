@@ -1,4 +1,4 @@
-import AppError from '../utils/error.util.js'
+import AppError from '../utils/error.util.js';
 import user from '../models/user.model.js';
 import cloudinary from 'cloudinary';
 import fs from 'fs';
@@ -19,7 +19,7 @@ const registerUser = async (req, res, next) => {
         return next(new AppError('All Fields are Required', 400));
     }
 
-    const userExists = await user.findOne({email});    
+    const userExists = await user.findOne({email});
 
     if(userExists){
         return next(new AppError('User Already Exists !!', 400));
@@ -65,7 +65,6 @@ const registerUser = async (req, res, next) => {
                     }
                 });
             }
-
         }
         catch(err){
             return next(new AppError("Avatar Upload Failed, Please try Again", 500));

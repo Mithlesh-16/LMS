@@ -6,6 +6,7 @@ import userRoutes from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';
 import payRoutes from './routes/payment.routes.js';
 import errorMiddleware from './middlewares/error.middleware.js';
+import miscellaneousRoutes from './routes/miscellaneous.routes.js';
 const app = express();
 
 app.use(express.json());
@@ -18,14 +19,17 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: true}));
 
-//users 
+//users
 app.use('/api/v1/users', userRoutes);
 
 //courses
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/payments', payRoutes);
 
-// //routes of 3 modules
+//contact
+app.use('/api/v1', miscellaneousRoutes);
+
+//routes of 3 modules
 app.all('*', (req, res) => {
     res.status(404).send("404! Page not found.");
 })
