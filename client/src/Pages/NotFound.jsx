@@ -13,12 +13,12 @@ function NotFound(){
                 </div>
                 {/* <button className="mt-5"> */}
                 <div className="flex justify-center items-center gap-5 mt-5">
-                    <button href="" onClick={() => navigate(-1)} className="relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-yellow-500 focus:outline-none focus:ring">
+                    <button href="" onClick={() => navigate(-1)} className="relative cursor-pointer inline-block text-sm font-medium text-[#FF6A3D] group active:text-yellow-500 focus:outline-none focus:ring">
                         <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
                             Go Back
                         </span>
                     </button>
-                    <button href="" onClick={() => navigate(-1)} className="relative inline-block text-sm font-medium text-green-500 group active:text-yellow-500 focus:outline-none focus:ring">
+                    <button href="" onClick={() => navigate(-1)} className="relative cursor-pointer inline-block text-sm font-medium text-green-500 group active:text-yellow-500 focus:outline-none focus:ring">
                         <span className="relative block px-8 py-3 bg-[#1A2238] border border-current">
                             Home
                         </span>
