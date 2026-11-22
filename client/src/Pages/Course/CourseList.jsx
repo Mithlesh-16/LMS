@@ -15,7 +15,7 @@ function CourseList() {
     useEffect(() => {
         loadCourses();
     }, [])
-    console.log("courseData payload: ", courseData);
+    // console.log("courseData payload: ", courseData);
 
     return (
         <HomeLayout>

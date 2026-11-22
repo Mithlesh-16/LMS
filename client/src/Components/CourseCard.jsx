@@ -7,7 +7,7 @@ export function CourseCard({data}){
         onClick={() => navigate("/course/description", {state:{...data}})}
         className="text-white w-[22rem] h-[430px] shadow-lg rounded-lg cursor-pointer group overflow-hidden bg-zinc-700">
             <div className="overflow-hidden">
-                <img src={data?.thumbnail?.secure_url} alt="course thumbnail" className="h-48 w-full rounded-tl-lg rounded-tr-lg group-hover:scale=[1,2] transition-all"/>
+                <img src={data?.thumbnail?.secure_url} alt="course thumbnail" className="h-48 w-full bg-contain rounded-tl-lg rounded-tr-lg group-hover:scale=[1,2] transition-all"/>
                 <div className="p-3 space-y-1 text-white">
                     <h2 className="text-xl font-bold text-yellow-500 line-clamp-2">
                         {data?.title}
