@@ -5,9 +5,10 @@ import axiosInstance from '../../helpers/axiosInstance'
 const initialState = {
     isLoggedIn: localStorage.getItem('isLoggedIn') || false,
     role: localStorage.getItem('role') || "",
-    data: localStorage.getItem('data') || {}
+    data: JSON.parse(localStorage.getItem('data')) || {}
 }
 
+// we do network request using the createAsyncThunk
 export const createAccount= createAsyncThunk("/auth/signup", async(data) => {
     try{
         const res = axiosInstance.post("users/register", data);
