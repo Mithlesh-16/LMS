@@ -272,7 +272,8 @@ const updateProfile = async(req, res, next) => {
                     User.avatar.secure_url = result.secure_url;
 
                     //remove the file from server after uploading it to cloudinary
-                    fs.rm(`../uploads/${req.file.filename}`)
+                    // fs.rm(`../uploads/${req.file.filename}`)
+                    await fs.promises.rm(req.file.path);
                 }
 
             }catch(err){
@@ -283,7 +284,8 @@ const updateProfile = async(req, res, next) => {
         await User.save();
         res.status(200).json({
             success: true,
-            message: "User Details updated Successfully!!"
+            message: "User Details updated Successfully!!",
+            user: User
         })
 
     }

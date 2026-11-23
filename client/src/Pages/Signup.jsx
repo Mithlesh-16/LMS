@@ -54,9 +54,9 @@ function Signup(){
         } 
 
         //validating the form values
-        isValidName(signupData.name);
-        isValidPassword(signupData.password);
-        isValidEmail(signupData.email);
+        isValidName(signupData?.name);
+        isValidPassword(signupData?.password);
+        isValidEmail(signupData?.email);
 
         const formData = new FormData();
         formData.append("fullName", signupData.fullName);
