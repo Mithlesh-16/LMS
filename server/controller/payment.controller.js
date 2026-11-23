@@ -36,12 +36,13 @@ export const buySubscription = async(req, res, next) => {
         //     customer_notify: 1
         // });
 
-        const subscription = await razorpay.subscriptions.create({
-    plan_id: process.env.RAZORPAY_PLAN_ID,
-    total_count: 12,
-    quantity: 1,
-    customer_notify: true
-});
+        const subscription = await razorpay.subscriptions.
+        create({
+            plan_id: process.env.RAZORPAY_PLAN_ID,
+            total_count: 12,
+            quantity: 1,
+            customer_notify: true
+        });
 
         user.subscription.id = subscription.id;
         user.subscription.status = subscription.status;
@@ -169,7 +170,9 @@ export const allPayments = async(req, res, next) => {
         })
     }
     catch(e){
-
+        return next(
+            new AppError("Error during Fetching all Payments!!", 400)
+        )
     }
     
 
