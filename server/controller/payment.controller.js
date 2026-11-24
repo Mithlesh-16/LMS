@@ -117,7 +117,6 @@ export const cancelSubscription = async(req, res, next) => {
     try{
         const {id} = req.user;
         const user = await User.findById(id);
-
         if(!user){
             return next(
                 new AppError('Unauthorised, please login')
@@ -131,12 +130,18 @@ export const cancelSubscription = async(req, res, next) => {
                 )
             )
         }
-
+        if(user.subscription?.status === "cancelled"){
+            return next(
+                new AppError(
+                    'Already Cancelled the subscription', 400
+                )
+            )
+        }
         const subscriptionId = user.subscription.id;
         const subscription = await razorpay.subscriptions.cancel(
             subscriptionId
         )
-
+        console.log("subscription: ", subscription);
         user.subscription.status = subscription.status;
         await user.save();
 
@@ -174,7 +179,4 @@ export const allPayments = async(req, res, next) => {
             new AppError("Error during Fetching all Payments!!", 400)
         )
     }
-    
-
-    
 }

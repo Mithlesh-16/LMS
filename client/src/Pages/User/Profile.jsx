@@ -1,11 +1,26 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import HomeLayout from "../../Layouts/HomeLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { cancelCourseBundle } from "../../Redux/Slices/RazorpaySlice";
+import { getUserData } from "../../Redux/Slices/authSlice";
+import toast from "react-hot-toast";
 function Profile(){
     const userData = useSelector((state) => state.auth.data);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    async function handleCancellation(){
+        if(userData?.subscription?.status !== 'active'){
+            toast.error("Already Cancelled !!")
+            return;
+        }
+        console.log("userData: ", userData);
+        await dispatch(cancelCourseBundle());
+        const updatedUser = await dispatch(getUserData());
+        console.log("new userData fetched: ", updatedUser);
+        navigate("/");
+    }
 
     return(
         <HomeLayout>
@@ -30,9 +45,17 @@ function Profile(){
                         Edit Profile</Link>
                     </div>
                     {userData?.subscription?.status === 'active' && (
-                        <button className="w-full py-2 rounded-sm bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300">
+                        <button 
+                        onClick={handleCancellation}
+                        className="w-full py-2 rounded-sm bg-red-600 hover:bg-red-500 transition-all ease-in-out duration-300">
                             Cancel Subscription
                         </button>
+                    )}
+                    {userData?.subscription?.status !== 'active' && (
+                        <Link to="/checkout"
+                        className="w-full py-2 rounded-sm bg-green-600 hover:bg-green-500 transition-all ease-in-out duration-300 text-center font-bold text-xl">
+                            Subscribe Now
+                        </Link>
                     )}
                 </div>
             </div>

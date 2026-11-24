@@ -54,7 +54,8 @@ const userSchema = new Schema({
 
 userSchema.methods.generateToken = function(){
     // jwt.sign(payload, secret, options); 
-    return jwt.sign({
+    return jwt.sign(
+    {
         id: this._id,
         fullName: this.fullName,
         email: this.email,
@@ -69,17 +70,12 @@ userSchema.methods.generateToken = function(){
 
 userSchema.methods.generateForgotPasswordToken = async function(){
     const resetToken = crypto.randomBytes(20).toString('hex');
-
     this.forgotPasswordToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
     this.forgotPasswordExpiry = Date.now() + 15*60*1000; //15min from now
-
     return resetToken;
-    
-
 }
 
 userSchema.methods.comparePassword = async function(given_password){

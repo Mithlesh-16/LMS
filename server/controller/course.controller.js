@@ -132,19 +132,33 @@ const updateCourse = async(req, res, next) => {
 
 }   
 
-const removeCourse = async(req, res, next) => {
+const removeCourseLecturesById = async(req, res, next) => {
     try{
-        const {id} = req.params;
-        const course = await Course.findById(id);
+        const {courseId, lectureId} = req.params;
+        const course = await Course.findById(courseId);
 
         if(!course){
             return next(new AppError("Course with given id does not exists ", 500));
         }
 
-        await Course.findByIdAndDelete(id);
+        const lecture = await Course?.lectures?.findById(lectureId);
+        const lecture_idx = await Course?.lectures?.findIndex((lec) => lec._id.toString() == lectureId);
+        if(lecture_idx === -1) return next(new AppError("Course Lecture given lectureId does not exists", 500));
+
+        //removing lecture
+        const [removedLecture] = course.lectures.splice(lecture_idx, 1);
+        if(removedLecture?.lecture?.public_id){
+            await cloudinary.v2.uploader.destroy(removedLecture?.lecture?.public_id)
+        }
+
+        course.numberOfLectures(course.lectures.length)
+        await course.save();
+
         res.status(200).json({
             success: true,
-            message: "Course deleted Successfully"
+            message: "Lecture deleted Successfully",
+            course: course,
+            Lectures: course?.lectures
         })
 
     }catch(e){
@@ -170,55 +184,66 @@ const addLecturesToCourseById = async(req, res, next) => {
         description,
         lecture: {}
     };
-
-    try{
             console.log("inside try Block of file uploading");
-
-                if(req.file){
-                const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                    folder: 'lms',
-                    height: 400,
-                    width: 400,
-                    crop: "fill",
-                    gravity: "faces"
-                })
-
-
-                if(result){
-                    lectureData.lecture.public_id = result.public_id;
-                    lectureData.lecture.secure_url = result.secure_url;
-                    console.log(result, "inside the result block");
-                    //remove file from server
-                    fs.rm(`../uploads/${req.file.path}`, (err) => {
-                        console.log("Removed the files successfully");
-                    });
-                }
+        // Old Implementation
+        // if(req.file){
+        // const result = await cloudinary.v2.uploader.upload(req.file.path, {
+        //     folder: 'lms',
+        //     height: 400,
+        //     width: 400,
+        //     crop: "fill",
+        //     gravity: "faces"
+        // })
 
 
-                res.status(200).json({
-                    success: true,
-                    message: "Course created successfully!!",
-                    course
-                })
+        // if(result){
+        //     lectureData.lecture.public_id = result.public_id;
+        //     lectureData.lecture.secure_url = result.secure_url;
+        //     console.log(result, "inside the result block");
+        //     //remove file from server
+        //     fs.rm(`../uploads/${req.file.path}`, (err) => {
+        //         console.log("Removed the files successfully");
+        //     });
+        // }
 
+
+        // res.status(200).json({
+        //     success: true,
+        //     message: "Course created successfully!!",
+        //     course
+        // })
+
+    // }
+
+    if(req.file){
+        try{
+            const result = await cloudinary.v2.uploader.upload(req.file.path, {
+                folder: "lms",
+                height: 400,
+                width: 400,
+                crop: "fill",
+                gravity: "faces"
+            })
+            if(result){
+                lectureData.lecture.public_id = result.public_id;
+                lectureData.lecture.secure_url = result.secure_url;
             }
-
-        }catch(e){
-            return next(new AppError(e.message, 500))
-
+        }finally{
+            fs.rm(`../uploads/${req.file.path}`, () => {
+                // console.log("removed the files successfully");
+            })
         }
-
-        course.lectures.push(lectureData);
-        course.numberOfLectures = course.lectures.length;
-        await course.save();
-
-        res.status(200).json({
-            success: true,
-            message: "Lectures added to the course Successfully !!",
-            course
-        })
     }
-    catch(e){
+
+    course.lectures.push(lectureData);
+    course.numberOfLectures = course.lectures.length;
+    await course.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Lectures added to the course Successfully !!",
+        course
+    })}catch(e){
         return next(new AppError(e.message, 400));
     }
 
@@ -229,6 +254,6 @@ export {
     getLecturesByCourseId,
     createCourse,
     updateCourse,
-    removeCourse,
+    removeCourseLecturesById,
     addLecturesToCourseById
 }

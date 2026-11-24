@@ -1,3 +1,4 @@
+import { getUserProfile } from "../controller/user.controller.js";
 import AppError from "../utils/error.util.js";
 import jwt from 'jsonwebtoken'
 const isLoggedIn = async function(req, res, next){
@@ -24,10 +25,8 @@ const authorizedRoles = (...roles) => async(req, res, next) =>{
 }
 
 const authorizedSubscriber = async(req, res, next) => {
-    const currentUserRoles = req.user.role;
-    const subscription = req.user.subscription;
-
-    if(currentUserRoles != "ADMIN" && subscription.status != "active"){
+    const updatedUser = await user.findById(req.user.id);
+    if(updatedUser.Roles != "ADMIN" && updatedUser.subscription.status != "active"){
         return next(
             new AppError("Please Subscribe to access this course !!", 400)
         )

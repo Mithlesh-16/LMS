@@ -119,7 +119,7 @@ const getUserProfile = async (req, res, next) => {
         const userId = req.user.id;
         console.log(userId);
         const users = await user.findById(userId);
-
+        console.log("user from getUserProfile: ", users);
         res.status(200).json({
             success:true,
             message: "user Details",
